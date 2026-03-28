@@ -1,15 +1,30 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "server.js"
-    }
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/(.*)", "destination": "/dsahub.html" }
   ]
 }
+```
+
+### Step 5 — Add your API key in Vercel Dashboard
+
+Go to **Vercel → Your Project → Settings → Environment Variables** and add:
+- Key: `GROQ_API_KEY`
+- Value: your actual key
+
+**Delete your `.env` file** and add it to `.gitignore`.
+
+### Step 6 — Update your frontend `script.js`
+
+Change your API call URL from `http://localhost:5000/api/ai` to just `/api/ai` (relative path).
+
+### Step 7 — Deploy
+
+Push only these files to GitHub (no `node_modules`, no `.env`):
+```
+api/ai.js
+dsahub.html
+style.css
+script.js
+package.json
+vercel.json
