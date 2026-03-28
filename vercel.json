@@ -1,0 +1,18 @@
+{
+  "version": 2
+}
+```
+
+And rename `dsahub.html` → `index.html`.
+
+Vercel automatically serves `index.html` as the root — it won't auto-serve a custom-named HTML file without routing config.
+
+**So your final structure should be:**
+```
+your-project/
+├── api/
+│   └── ai.js
+├── index.html        ← renamed from dsahub.html
+├── style.css
+├── script.js
+└── package.json
