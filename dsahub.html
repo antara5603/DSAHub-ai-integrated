@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSAHub — Master Patterns, Ace Interviews</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="logo">
+      <div class="logo-icon">{ }</div>
+      <div class="logo-text">DSA<span>Hub</span></div>
+    </div>
+
+    <nav class="nav-section">
+      <div class="nav-label">Practice</div>
+      <div class="nav-item active" onclick="goTo('questions',this)">
+        <span class="nav-icon">⬡</span> Questions
+        <span class="nav-badge" id="nb-questions">84</span>
+      </div>
+      <div class="nav-item" onclick="goTo('roadmap',this)">
+        <span class="nav-icon">◈</span> Roadmap
+      </div>
+      <div class="nav-item" onclick="goTo('companies',this)">
+        <span class="nav-icon">◎</span> Companies
+        <span class="nav-badge">8</span>
+      </div>
+    </nav>
+
+    <nav class="nav-section">
+      <div class="nav-label">Progress</div>
+      <div class="nav-item" onclick="goTo('stats',this)">
+        <span class="nav-icon">▦</span> My Stats
+      </div>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="streak-card">
+        <div class="streak-top">🔥 Current Streak</div>
+        <div class="streak-num" id="streak-num">7</div>
+        <div class="streak-sub">days in a row</div>
+      </div>
+      <div style="font-size:11px;color:var(--text3);text-align:center">Progress saved locally</div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topnav">
+      <button class="hamburger" onclick="toggleSidebar()">☰</button>
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input type="text" id="srch" placeholder="Search questions or patterns..." oninput="render()">
+      </div>
+      <div class="nav-filters">
+        <select class="filter-select" id="diff-sel" onchange="render()">
+          <option value="">All difficulty</option>
+          <option>Easy</option><option>Medium</option><option>Hard</option>
+        </select>
+        <select class="filter-select" id="status-sel" onchange="render()">
+          <option value="">All status</option>
+          <option value="unsolved">Unsolved</option>
+          <option value="solved">Solved</option>
+        </select>
+      </div>
+      <button class="theme-toggle" id="theme-btn" onclick="toggleTheme()">☽</button>
+    </div>
+
+    <div class="content">
+
+      <!-- Questions Page -->
+      <div class="page active" id="page-questions">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-label">Solved</div>
+            <div class="stat-card-val" id="st-solved">0</div>
+            <div class="stat-card-sub">of <span id="st-total">84</span> questions</div>
+            <div class="mini-prog"><div class="mini-prog-fill" id="st-prog" style="width:0%"></div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-label">Topics</div>
+            <div class="stat-card-val">10</div>
+            <div class="stat-card-sub">all covered</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-label">Patterns</div>
+            <div class="stat-card-val">18</div>
+            <div class="stat-card-sub">unique patterns</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-label">Companies</div>
+            <div class="stat-card-val">8</div>
+            <div class="stat-card-sub">tagged</div>
+          </div>
+        </div>
+
+        <!-- AI Panel -->
+        <div class="ai-panel">
+          <div class="ai-panel-head">
+            <div class="ai-indicator"></div>
+            <div class="ai-panel-title">AI Pattern Coach</div>
+            <div class="ai-panel-sub">Powered by Claude</div>
+          </div>
+          <div class="ai-btns">
+            <button class="ai-btn" onclick="askAI('Explain the Sliding Window pattern with 2 examples and when to use it vs Two Pointers')">💡 Sliding Window</button>
+            <button class="ai-btn" onclick="askAI('What is the difference between BFS and DFS? When should I use each in graph problems?')">🔀 BFS vs DFS</button>
+            <button class="ai-btn" onclick="askAI('Explain Dynamic Programming: what makes a problem a DP problem, and what are the main DP patterns?')">🧠 DP explained</button>
+            <button class="ai-btn" onclick="askAI('Give me a 4-week DSA interview prep plan for FAANG companies, starting from intermediate level')">📅 Study plan</button>
+            <button class="ai-btn" onclick="askAI('What is the Two Pointers pattern? Give me 3 problems and the core template code for it')">⇄ Two Pointers</button>
+          </div>
+          <div class="ai-custom-row">
+            <input type="text" class="ai-custom-input" id="ai-input" placeholder="Ask anything about DSA patterns, problems, or concepts...">
+<button class="ai-send-btn" id="ai-send">Ask →</button>
+          </div>
+          <div class="ai-response" id="ai-response"></div>
+        </div>
+
+        <div class="view-tabs">
+          <button class="vtab active" onclick="setView('topic-pattern',this)">Topic → Pattern</button>
+          <button class="vtab" onclick="setView('pattern-only',this)">By Pattern</button>
+          <button class="vtab" onclick="setView('flat',this)">All Questions</button>
+        </div>
+
+        <div id="q-content"></div>
+      </div>
+
+      <!-- Roadmap Page -->
+      <div class="page" id="page-roadmap">
+        <div class="page-header">
+          <div class="page-title">Learning Roadmap</div>
+          <div class="page-sub">Recommended order to master DSA — beginner to advanced</div>
+        </div>
+        <div class="roadmap-grid" id="roadmap-content"></div>
+      </div>
+
+      <!-- Companies Page -->
+      <div class="page" id="page-companies">
+        <div class="page-header">
+          <div class="page-title">Company-wise Questions</div>
+          <div class="page-sub">Filter questions asked at specific companies</div>
+        </div>
+        <div class="co-chips" id="co-chips"></div>
+        <div id="co-content"></div>
+      </div>
+
+      <!-- Stats Page -->
+      <div class="page" id="page-stats">
+        <div class="page-header">
+          <div class="page-title">My Progress</div>
+          <div class="page-sub">Topic-by-topic breakdown of your solving journey</div>
+        </div>
+        <div id="stats-content"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
